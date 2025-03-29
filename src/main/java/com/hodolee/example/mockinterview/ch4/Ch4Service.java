@@ -1,5 +1,6 @@
 package com.hodolee.example.mockinterview.ch4;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -7,20 +8,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class Ch4Service {
 
-    private static int callCount;
-
+    @CircuitBreaker(name = "caller", fallbackMethod = "fallbackMethod")
     public void v1Method() {
-        incrementCallCount();
+        log.info("v1Method");
+        for (int i = 0; i <10; i++) {
+            if (i == 5) {
+                log.info("before RuntimeException");
+                throw new RuntimeException("too many request");
+            }
+        }
     }
 
-    public void v2Method() {
-        incrementCallCount();
-    }
-
-    private static void incrementCallCount() {
-        log.info("before call count: {}", callCount);
-        callCount++;
-        log.info("after call count: {}", callCount);
+    private void fallbackMethod(Throwable e) {
+        log.info("fallbackMethod : {}", e.getMessage());
     }
 
 }

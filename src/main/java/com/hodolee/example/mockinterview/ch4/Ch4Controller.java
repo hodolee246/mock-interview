@@ -11,15 +11,10 @@ public class Ch4Controller {
 
     private final Ch4Service ch4Service;
 
-    @GetMapping("v1/nginx")
+    @GetMapping("v1/resilience4j")
     public ResponseEntity<?> v1Method() {
         ch4Service.v1Method();
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("v2/nginx")
-    public ResponseEntity<?> v2Method() {
-        ch4Service.v2Method();
-        return ResponseEntity.ok().build();
-    }
 }
