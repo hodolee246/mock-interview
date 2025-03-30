@@ -13,9 +13,8 @@ public class Ch4Controller {
     private final Ch4Service ch4Service;
 
     @GetMapping("v1/resilience4j")
-    public ResponseEntity<?> v1Method(@RequestParam boolean b) {
-        ch4Service.circuitBreakerExample(b);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> v1Method(final SearchDto searchDto) {
+        return ResponseEntity.ok(ch4Service.getKakaoBlog(searchDto.query(), searchDto.sort(), searchDto.page()));
     }
 
 }
