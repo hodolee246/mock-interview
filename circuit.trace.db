@@ -1,4 +1,28 @@
-2025-03-29 16:55:50 database: flush
+2025-03-30 21:28:48 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "show [*]database"; SQL statement:
+show database [42000-214]
+2025-03-30 21:31:46 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMPUTER_PRICE" already exists; SQL statement:
+CREATE TABLE computer_price (
+    idx INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    success_price INT,
+    failure_price INT
+) [42101-214]
+2025-03-30 21:31:59 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMPUTER_PRICE" already exists; SQL statement:
+CREATE TABLE computer_price (
+    idx INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    success_price INT,
+    failure_price INT
+) [42101-214]
+2025-03-30 21:32:14 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMPUTER_PRICE" already exists; SQL statement:
+CREATE TABLE computer_price (
+    idx INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    success_price INT,
+    failure_price INT
+) [42101-214]
+2025-03-30 21:53:32 database: flush
 org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/hodol/IdeaProjects/ScaleUpGuide/mock-interview/circuit.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.get(DbException.java:212)
 	at org.h2.message.DbException.convert(DbException.java:395)
@@ -180,7 +204,7 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/hodol/I
 	at org.h2.mvstore.FileStore.open(FileStore.java:128)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:452)
 	... 164 more
-2025-03-29 16:55:52 database: flush
+2025-03-30 21:53:34 database: flush
 org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/hodol/IdeaProjects/ScaleUpGuide/mock-interview/circuit.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.get(DbException.java:212)
 	at org.h2.message.DbException.convert(DbException.java:395)
