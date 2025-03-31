@@ -23,6 +23,7 @@ public class Ch4Service {
 
     @CircuitBreaker(name = "caller", fallbackMethod = "getNaverBlog")
     public ExternalApiResponse getKakaoBlog(String query, String sort, Integer page) {
+        log.info("getKakaoBlog query: {}, sort: {}, page: {}", query, sort, page);
         return kakaoSearcher.searchBlog(new BlogSearchDto(query, sort, page));
     }
 
