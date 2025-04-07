@@ -1,12 +1,12 @@
-### 1. 단축 URL 생성 요청
+### 단축URL 생성
 POST http://localhost:8080/shorten
 Content-Type: application/json
 
 {
-  "title": "남자 맨투맨",
-  "id": 1,
-  "originalUrl": "http://localhost:8080/product/1"
+  "title": "남자맨투맨",
+  "id": 112,
+  "originalUrl": "http://localhost:8080/product/112"
 }
 
-### 2. 단축 URL 접근 요청 (리다이렉트 테스트용)
-GET http://localhost:8080/%EB%82%A8%EC%9E%90-%EB%A7%A8%ED%88%AC%EB%A7%A8/1
+### 단축URL 요청
+GET http://localhost:8080/%EB%82%A8%EC%9E%90%EB%A7%A8%ED%88%AC%EB%A7%A8/aVAdYN2

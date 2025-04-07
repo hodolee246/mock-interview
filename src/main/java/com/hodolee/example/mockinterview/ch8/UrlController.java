@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +35,9 @@ public class UrlController {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<String> getProduct(@PathVariable Long id) {
+    public ResponseEntity<String> getProduct(@PathVariable String id) {
         log.info("getProduct id: {}", id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(id);
     }
 
 }

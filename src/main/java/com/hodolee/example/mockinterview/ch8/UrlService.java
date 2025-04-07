@@ -1,10 +1,8 @@
 package com.hodolee.example.mockinterview.ch8;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.hashids.Hashids;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -15,29 +13,31 @@ import java.util.Map;
 public class UrlService {
 
     private final Map<String, String> urlMap = new HashMap<>();
-
-    public String generateSlug(String title) {
-        return title.trim().replaceAll("\\s+", "-");
-    }
+    private final Hashids hashids = new Hashids("hodolee", 7);
 
     public String createShortUrl(String title, Long id, String originalUrl) {
-        String slug = generateSlug(title);
-        String encodedSlug = URLEncoder.encode(slug, StandardCharsets.UTF_8);
-        String key = slug + "/" + id;
+        String encode = URLEncoder.encode(title, StandardCharsets.UTF_8);
+        String hashedId = hashids.encode(id);
+        String key = title + "/" + hashedId;
 
         urlMap.put(key, originalUrl);
 
-        return String.format("http://localhost:8080/%s/%d", encodedSlug, id);
+        return String.format("http://localhost:8080/%s/%s", encode, hashedId);
     }
 
-    public String redirect(String title, String id) {
+    public String redirect(String title, String hashedId) {
         try {
             String decodedTitle = URLDecoder.decode(title, StandardCharsets.UTF_8);
-            String key = decodedTitle + "/" + id;
+
+            if (hashids.decode(hashedId).length == 0) {
+                throw new RuntimeException("id not found");
+            }
+
+            String key = decodedTitle + "/" + hashedId;
             String originalUrl = urlMap.get(key);
 
             if (originalUrl == null) {
-                throw new RuntimeException("not found");
+                throw new RuntimeException("url not found");
             }
 
             return originalUrl;
