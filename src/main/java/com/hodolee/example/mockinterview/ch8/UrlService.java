@@ -1,5 +1,6 @@
 package com.hodolee.example.mockinterview.ch8;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hashids.Hashids;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class UrlService {
 
     private final Map<String, String> urlMap = new HashMap<>();
@@ -26,24 +28,21 @@ public class UrlService {
     }
 
     public String redirect(String title, String hashedId) {
-        try {
-            String decodedTitle = URLDecoder.decode(title, StandardCharsets.UTF_8);
+        String decodedTitle = URLDecoder.decode(title, StandardCharsets.UTF_8);
 
-            if (hashids.decode(hashedId).length == 0) {
-                throw new RuntimeException("id not found");
-            }
-
-            String key = decodedTitle + "/" + hashedId;
-            String originalUrl = urlMap.get(key);
-
-            if (originalUrl == null) {
-                throw new RuntimeException("url not found");
-            }
-
-            return originalUrl;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (hashids.decode(hashedId).length == 0) {
+            log.error("id not found");
         }
+
+        String key = decodedTitle + "/" + hashedId;
+        String originalUrl = urlMap.get(key);
+
+        if (originalUrl == null) {
+            log.error("url not found");
+        }
+
+        log.info("redirect url: {}", originalUrl);
+        return originalUrl;
     }
 
 }

@@ -15,7 +15,7 @@ public class UrlController {
 
     private final UrlService urlService;
 
-    @PostMapping("shorten")
+    @PostMapping("url")
     public ResponseEntity<String> createShortUrl(@RequestBody ShortenRequest request) {
         String shortUrl = urlService.createShortUrl(
                 request.getTitle(),

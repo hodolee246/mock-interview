@@ -1,5 +1,5 @@
 ### 단축URL 생성
-POST http://localhost:8080/shorten
+POST http://localhost:8080/url
 Content-Type: application/json
 
 {
