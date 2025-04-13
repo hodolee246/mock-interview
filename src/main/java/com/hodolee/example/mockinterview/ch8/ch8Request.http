@@ -4,9 +4,13 @@ Content-Type: application/json
 
 {
   "title": "남자맨투맨",
-  "id": 112,
-  "originalUrl": "http://localhost:8080/product/112"
+  "id": 115,
+  "originalUrl": "http://localhost:8080/product/115"
 }
 
 ### 단축URL 요청
-GET http://localhost:8080/%EB%82%A8%EC%9E%90%EB%A7%A8%ED%88%AC%EB%A7%A8/aVAdYN2
+GET http://localhost:8080/%EB%82%A8%EC%9E%90%EB%A7%A8%ED%88%AC%EB%A7%A8/dNy9kNv
+
+### 해당 요청은 (http에서) ASCII가 아닌 문자가 있다고 톰캣에서 판단하여 RFC 위반이라고 생각해 400에러
+### 브라우저에서 해당 요청을 할 경우 브라우저 내부에서 URL을 RFC 3986 표준에 맞게 자동으로 퍼센트 인코딩 해서 요청해줘서 처리가 되는거
+GET http://localhost:8080/남자맨투맨/dNy9kNv

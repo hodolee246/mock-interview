@@ -29,8 +29,12 @@ public class UrlController {
     @GetMapping("/{title}/{id}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String title,
                                                       @PathVariable String id) {
+        String redirectUrl = urlService.redirect(title, id);
+        if (redirectUrl == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(urlService.redirect(title, id)))
+                .location(URI.create(redirectUrl))
                 .build();
     }
 
