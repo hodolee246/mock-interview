@@ -32,6 +32,7 @@ public class UrlService {
 
         if (hashids.decode(hashedId).length == 0) {
             log.error("id not found");
+            return null;
         }
 
         String key = decodedTitle + "/" + hashedId;
@@ -39,9 +40,16 @@ public class UrlService {
 
         if (originalUrl == null) {
             log.error("url not found");
+            return null;
         }
 
         log.info("redirect url: {}", originalUrl);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            log.error("interrupted : {}", e.getMessage());
+            return null;
+        }
         return originalUrl;
     }
 
