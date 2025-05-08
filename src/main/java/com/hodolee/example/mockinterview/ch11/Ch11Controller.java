@@ -30,7 +30,7 @@ public class Ch11Controller {
     }
 
     @GetMapping("/feed/{userId}")
-    public List<Post> getFeed(@PathVariable Long userId) {
+    public List<Post> getFeed(@PathVariable Long userId) throws InterruptedException {
         return ch11Service.getFeed(userId);
     }
 

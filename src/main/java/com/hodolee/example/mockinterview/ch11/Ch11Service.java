@@ -11,6 +11,7 @@ public class Ch11Service {
     private final Map<Long, User> users = new HashMap<>();
     private final Map<Long, Set<Long>> followingUsers = new HashMap<>();
     private final Map<Long, List<Post>> userPosts = new HashMap<>();
+    private final Map<Long, CachedPost> cache = new HashMap<>();
 
     private Long userSeq = 1L;
     private Long postSeq = 1L;
@@ -31,14 +32,24 @@ public class Ch11Service {
         return post;
     }
 
-    public List<Post> getFeed(Long userId) {
+    public List<Post> getFeed(Long userId) throws InterruptedException {
         Set<Long> followeeIds = followingUsers.getOrDefault(userId, Set.of());
 
-        return followeeIds.stream()
+        CachedPost cachedPost = cache.get(userId);
+        if (cachedPost != null) {
+            return cachedPost.posts();
+        }
+
+        List<Post> posts = followeeIds.stream()
                 .flatMap(id -> userPosts.getOrDefault(id, List.of()).stream())
                 .sorted(Comparator.comparing(Post::createdAt).reversed())
-                .limit(20)
+                .limit(3)
                 .toList();
+        cache.put(userId, new CachedPost(posts, LocalDateTime.now()));
+        // 디따 많이 조회중...
+        Thread.sleep(3000);
+
+        return posts;
     }
 
 }
