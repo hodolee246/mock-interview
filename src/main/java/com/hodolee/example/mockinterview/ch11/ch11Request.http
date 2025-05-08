@@ -1,0 +1,10 @@
+### 유저 생성1
+POST http://localhost:8080/ch11/users?name=alice
+### 유저 생성2
+POST http://localhost:8080/ch11/users?name=bob
+### 팔로잉
+POST http://localhost:8080/ch11/follow?from=1&to=2
+### 게시글 작성
+POST http://localhost:8080/ch11/posts?userId=2&content=hello
+### 유저의 피드 조회
+GET  http://localhost:8080/ch11/feed/1
