@@ -23,6 +23,7 @@ public class Ch11Service {
     }
 
     public void follow(Long fromUserId, Long toUserId) {
+        // computeIfAbsent (없으면 put(fromUserId, new HashSet<>(toUserId)
         followingUsers.computeIfAbsent(fromUserId, k -> new HashSet<>()).add(toUserId);
     }
 
