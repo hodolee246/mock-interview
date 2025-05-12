@@ -12,3 +12,11 @@ blog:
 server:
   tomcat:
     uri-encoding: UTF-8
+
+
+spring:
+  datasource:
+    url: jdbc:h2:./circuit
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 1234

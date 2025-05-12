@@ -1,5 +1,7 @@
 package com.hodolee.example.mockinterview.ch11;
 
+import com.hodolee.example.mockinterview.ch11.feed.request.Post;
+import com.hodolee.example.mockinterview.ch11.feed.request.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,9 @@ public class Ch11Controller {
     private final Ch11Service ch11Service;
 
     @PostMapping("users")
-    public User createUser(@RequestParam String name) {
-        return ch11Service.createUser(name);
+    public ResponseEntity<?> createUser(@RequestParam String name) {
+        ch11Service.createUser(name);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("follow")
@@ -25,12 +28,13 @@ public class Ch11Controller {
     }
 
     @PostMapping("posts")
-    public Post createPost(@RequestParam Long userId, @RequestParam String content) {
-        return ch11Service.createPost(userId, content);
+    public ResponseEntity<?> createPost(@RequestParam Long userId, @RequestParam String content) {
+        ch11Service.createPost(userId, content);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/feed/{userId}")
-    public List<Post> getFeed(@PathVariable Long userId) throws InterruptedException {
+    public ResponseEntity<?> getFeed(@PathVariable Long userId) throws InterruptedException {
         return ch11Service.getFeed(userId);
     }
 

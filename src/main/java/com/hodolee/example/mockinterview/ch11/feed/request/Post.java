@@ -1,4 +1,4 @@
-package com.hodolee.example.mockinterview.ch11;
+package com.hodolee.example.mockinterview.ch11.feed.request;
 
 import java.time.LocalDateTime;
 
