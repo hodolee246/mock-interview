@@ -20,17 +20,17 @@ public class Follow {
     private LocalDateTime createAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User fromUser;
+    private FeedUser fromFeedUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User toUser;
+    private FeedUser toFeedUser;
 
     @Builder
-    public Follow(Long id, LocalDateTime createAt, User fromUser, User toUser) {
+    public Follow(Long id, LocalDateTime createAt, FeedUser fromFeedUser, FeedUser toFeedUser) {
         this.id = id;
         this.createAt = createAt;
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+        this.fromFeedUser = fromFeedUser;
+        this.toFeedUser = toFeedUser;
     }
 
 }

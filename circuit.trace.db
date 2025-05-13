@@ -370,3 +370,12 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/hodol/I
 	at org.h2.mvstore.FileStore.open(FileStore.java:128)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:452)
 	... 148 more
+2025-05-13 21:24:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user (name,id) values (?,default)"; expected "identifier"; SQL statement:
+insert into user (name,id) values (?,default) [42001-214]
+2025-05-13 21:26:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select u1_0.id,u1_0.name from [*]user u1_0 where u1_0.id=?"; expected "identifier"; SQL statement:
+select u1_0.id,u1_0.name from user u1_0 where u1_0.id=? [42001-214]
+2025-05-13 21:30:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "FEED_USER" not found; SQL statement:
+insert into feed_user (name,id) values (?,default) [42102-214]

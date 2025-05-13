@@ -22,14 +22,14 @@ public class Post {
     private LocalDateTime createAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private FeedUser feedUser;
 
     @Builder
-    public Post(Long id, String content, LocalDateTime createAt, User user) {
+    public Post(Long id, String content, LocalDateTime createAt, FeedUser feedUser) {
         this.id = id;
         this.content = content;
         this.createAt = createAt;
-        this.user = user;
+        this.feedUser = feedUser;
     }
 
 }

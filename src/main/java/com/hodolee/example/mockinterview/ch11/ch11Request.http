@@ -6,5 +6,7 @@ POST http://localhost:8080/ch11/users?name=bob
 POST http://localhost:8080/ch11/follow?from=1&to=2
 ### 게시글 작성
 POST http://localhost:8080/ch11/posts?userId=2&content=hello
+### 게시글 작성2
+POST http://localhost:8080/ch11/posts?userId=2&content=helloImUser2
 ### 유저의 피드 조회
 GET http://localhost:8080/ch11/feed/1

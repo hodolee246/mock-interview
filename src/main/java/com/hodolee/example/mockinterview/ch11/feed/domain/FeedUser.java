@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class FeedUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class User {
     private String name;
 
     @Builder
-    public User(Long id, String name) {
+    public FeedUser(Long id, String name) {
         this.id = id;
         this.name = name;
     }

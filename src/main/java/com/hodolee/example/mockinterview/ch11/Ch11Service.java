@@ -1,14 +1,14 @@
 package com.hodolee.example.mockinterview.ch11;
 
 import com.hodolee.example.mockinterview.ch11.cache.CachedPost;
+import com.hodolee.example.mockinterview.ch11.feed.domain.FeedUser;
 import com.hodolee.example.mockinterview.ch11.feed.domain.Follow;
 import com.hodolee.example.mockinterview.ch11.feed.domain.Post;
-import com.hodolee.example.mockinterview.ch11.feed.domain.User;
 import com.hodolee.example.mockinterview.ch11.feed.domain.repository.FollowRepository;
 import com.hodolee.example.mockinterview.ch11.feed.domain.repository.PostRepository;
 import com.hodolee.example.mockinterview.ch11.feed.domain.repository.UserRepository;
+import com.hodolee.example.mockinterview.ch11.feed.response.RespPost;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,61 +23,66 @@ public class Ch11Service {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final PostRepository postRepository;
-
-    private final Map<Long, User> users = new HashMap<>();
-    private final Map<Long, Set<Long>> followingUsers = new HashMap<>();
-    private final Map<Long, List<Post>> userPosts = new HashMap<>();
-    private final Map<Long, CachedPost> cache = new HashMap<>();
-
-    private Long userSeq = 1L;
-    private Long postSeq = 1L;
+    // cache
+    private final Map<Long, List<RespPost>> cache = new HashMap<>();
 
     @Transactional
     public void createUser(String name) {
-        userRepository.save(User.builder()
+        userRepository.save(FeedUser.builder()
                 .name(name).build());
     }
 
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
-        User fromUser = userRepository.findById(fromUserId).orElseThrow(() -> new NoSuchElementException("can not found fromUserId: " + fromUserId));
-        User toUser = userRepository.findById(toUserId).orElseThrow(() -> new NoSuchElementException("can not found toUserId: " + toUserId));
+        FeedUser fromFeedUser = userRepository.findById(fromUserId).orElseThrow(() -> new NoSuchElementException("can not found fromUserId: " + fromUserId));
+        FeedUser toFeedUser = userRepository.findById(toUserId).orElseThrow(() -> new NoSuchElementException("can not found toUserId: " + toUserId));
 
         followRepository.save(Follow.builder()
-                .fromUser(fromUser)
-                .toUser(toUser)
+                .fromFeedUser(fromFeedUser)
+                .toFeedUser(toFeedUser)
                 .createAt(LocalDateTime.now())
                 .build());
     }
 
     @Transactional
     public void createPost(Long userId, String content) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("can not found userId: " + userId));
+        FeedUser feedUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("can not found userId: " + userId));
         postRepository.save(Post.builder()
-                .user(user)
+                .feedUser(feedUser)
                 .content(content)
                 .createAt(LocalDateTime.now())
                 .build());
     }
 
-    public List<Post> getFeed(Long userId) throws InterruptedException {
-        Set<Long> followeeIds = followingUsers.getOrDefault(userId, Set.of());
-
-        CachedPost cachedPost = cache.get(userId);
-        if (cachedPost != null) {
-            return cachedPost.posts();
+    public List<RespPost> getFeed(Long userId) throws InterruptedException {
+        // 캐시 존재하면 캐시 반환
+        if (cache.containsKey(userId)) {
+            return cache.get(userId);
         }
 
-        List<Post> posts = followeeIds.stream()
-                .flatMap(id -> userPosts.getOrDefault(id, List.of()).stream())
-                .sorted(Comparator.comparing(Post::createdAt).reversed())
-                .limit(3)
+        FeedUser fromFeedUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("can not found userId: " + userId));
+        List<Follow> followList = followRepository.findByFromFeedUser(fromFeedUser);
+        // 팔로우 누른 유저 조회
+        List<FeedUser> followFeedUserList = followList.stream()
+                .map(Follow::getToFeedUser)
                 .toList();
-        cache.put(userId, new CachedPost(posts, LocalDateTime.now()));
-        // 디따 많이 조회중...
-        Thread.sleep(3000);
 
-        return posts;
+        // 팔로우 유저들의 포스팅 조회
+        List<Post> followingUserPost = postRepository.findByFeedUserList(followFeedUserList);
+        // 리스폰스 변환
+        List<RespPost> responseList = followingUserPost.stream()
+                .map(followPost -> RespPost.of(
+                        followPost.getId(),
+                        followPost.getFeedUser().getId(),
+                        followPost.getContent(),
+                        followPost.getCreateAt()
+                )).toList();
+        // 너무 많아서 조회하는데 시간이 걸립니다...
+        Thread.sleep(2500);
+        // 캐시 저장
+        cache.put(userId, responseList);
+
+        return responseList;
     }
 
 }
