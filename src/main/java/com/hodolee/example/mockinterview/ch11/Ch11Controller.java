@@ -18,13 +18,15 @@ public class Ch11Controller {
     }
 
     @PostMapping("follow")
-    public ResponseEntity<String> follow(@RequestParam Long from, @RequestParam Long to) {
+    public ResponseEntity<String> follow(@RequestParam Long from,
+                                         @RequestParam Long to) {
         ch11Service.follow(from, to);
         return ResponseEntity.ok("Followed");
     }
 
     @PostMapping("posts")
-    public ResponseEntity<?> createPost(@RequestParam Long userId, @RequestParam String content) {
+    public ResponseEntity<?> createPost(@RequestParam Long userId,
+                                        @RequestParam String content) {
         ch11Service.createPost(userId, content);
         return ResponseEntity.ok().build();
     }
